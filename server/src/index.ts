@@ -1,9 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import { PORT } from './util/config';
-import userRouter from './router/user';
 import { connectToDatabase } from './util/db';
-
+import userRouter from './controllers/user';
+import loginRouter from './controllers/login';
 const app = express();
 
 app.use(cors());
@@ -14,6 +14,7 @@ app.get('/test', (_req, res) => {
 });
 
 app.use('/users', userRouter);
+app.use('/login', loginRouter);
 
 app.listen(PORT, async () => {
     await connectToDatabase();

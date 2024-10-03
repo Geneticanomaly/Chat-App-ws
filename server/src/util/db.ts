@@ -6,7 +6,7 @@ import path from 'path';
 // Initialize Sequelize with Sequelize-typescript
 const sequelize = new Sequelize(DATABASE_URL, {
     dialect: 'postgres',
-    models: [path.resolve(__dirname, 'models')], // Load models directory (if using models)
+    models: [path.resolve(__dirname, '../models')],
 });
 
 // Function to run migrations

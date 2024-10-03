@@ -34,7 +34,4 @@ export default class User extends Model {
     @Unique
     @Column(DataType.STRING)
     username!: string;
-
-    // @HasMany(() => ActiveSession)
-    // activeSession!: ActiveSession[];
 }
