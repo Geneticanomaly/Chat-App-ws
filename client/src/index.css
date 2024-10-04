@@ -1,14 +1,28 @@
 :root {
-    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-    line-height: 1.5;
-    font-weight: 400;
-
-    color-scheme: light dark;
-    color: rgba(255, 255, 255, 0.87);
     background-color: #242424;
+}
 
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+.message-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.message-form input {
+    height: 50px;
+    width: 300px;
+    outline: none;
+    border-radius: 10px;
+    padding-left: 20px;
+}
+
+.message-form button {
+    height: 50px;
+    width: 100px;
+    border-radius: 10px;
+}
+
+.message {
+    color: white;
 }
