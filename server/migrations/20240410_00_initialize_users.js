@@ -1,12 +1,12 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, UUIDV4 } = require('sequelize');
 
 module.exports = {
     up: async ({ context: queryInterface }) => {
         await queryInterface.createTable('users', {
             id: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
+                defaultValue: UUIDV4,
                 primaryKey: true,
-                autoIncrement: true,
             },
             email: {
                 type: DataTypes.STRING,

@@ -6,14 +6,14 @@ import path from 'path';
 // Initialize Sequelize with Sequelize-typescript
 const sequelize = new Sequelize(DATABASE_URL, {
     dialect: 'postgres',
-    models: [path.resolve(__dirname, '../models')],
+    models: [path.resolve(__dirname, 'models')],
 });
 
 // Function to run migrations
 const runMigrations = async () => {
     const migrator = new Umzug({
         migrations: {
-            glob: 'migrations/*.{js,ts}',
+            glob: 'migrations/*.js',
         },
         storage: new SequelizeStorage({ sequelize, tableName: 'migrations' }),
         context: sequelize.getQueryInterface(),
