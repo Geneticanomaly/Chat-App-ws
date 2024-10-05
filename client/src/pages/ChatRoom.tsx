@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { socket } from '../socket';
 import { useNavigate } from 'react-router-dom';
 
-function Chat() {
+function ChatRoom() {
     const navigate = useNavigate();
     const [activity, setActivity] = useState('');
     const [message, setMessage] = useState('');
@@ -87,4 +87,4 @@ function Chat() {
     );
 }
 
-export default Chat;
+export default ChatRoom;

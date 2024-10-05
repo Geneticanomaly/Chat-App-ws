@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Navbar from './components/Navbar';
-import Chat from './pages/Chat';
+import Chat from './pages/chat/Chat';
 
 function App() {
     return (
