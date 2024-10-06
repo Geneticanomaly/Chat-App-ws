@@ -1,30 +1,34 @@
 import { useQuery } from '@tanstack/react-query';
 import { getUsers } from '../services/user';
 import { useNavigate } from 'react-router-dom';
-
-type Chat = {
-    id: number;
-    userId1: string;
-    userId2: string;
-    createdAt: string;
-    updatedAt: string;
-};
+import chatServices from '../services/chat';
 
 type User = {
     id: number;
     email: string;
     username: string;
+};
+
+type Chat = {
+    id: number;
     createdAt: string;
     updatedAt: string;
-    chats: Chat[];
+    user: User;
 };
 
 function Home() {
     const navigate = useNavigate();
+    const user = window.localStorage.getItem('loggedInUser');
+    const userData = user ? JSON.parse(user) : null;
 
+    // const { isPending, error, data } = useQuery({
+    //     queryKey: ['usersData'],
+    //     queryFn: () => getUsers(),
+    // });
+    console.log(userData);
     const { isPending, error, data } = useQuery({
-        queryKey: ['usersData'],
-        queryFn: () => getUsers(),
+        queryKey: ['chats'],
+        queryFn: () => chatServices.getUserChats(userData.user.id),
     });
 
     if (isPending) return <div>Loading...</div>;
@@ -34,10 +38,11 @@ function Home() {
 
     return (
         <div>
-            {data.map((user: User) => (
-                <div key={user.id} style={{ display: 'flex', alignItems: 'center' }}>
-                    <p>{user.username}</p>
-                    <button onClick={() => navigate(`/chat/${user.id}`)}>Chat</button>
+            <div style={{ marginTop: '1rem' }}>My chats</div>
+            {data.map((chat: Chat) => (
+                <div key={chat.user.id} style={{ display: 'flex', alignItems: 'center' }}>
+                    <p>{chat.user.username}</p>
+                    <button onClick={() => navigate(`/chat/${chat.user.id}`)}>Chat</button>
                 </div>
             ))}
         </div>

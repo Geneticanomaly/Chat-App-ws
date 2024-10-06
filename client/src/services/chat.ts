@@ -6,6 +6,11 @@ const getAll = async () => {
     return res.data;
 };
 
+const getUserChats = async (userId: string) => {
+    const res = await axios.get(`${baseUrl}/user/${userId}`);
+    return res.data;
+};
+
 const create = async (userId1: string, userId2: string) => {
     const payload = {
         userId1,
@@ -15,4 +20,4 @@ const create = async (userId1: string, userId2: string) => {
     return res.data;
 };
 
-export default { getAll, create };
+export default { getAll, getUserChats, create };

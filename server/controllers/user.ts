@@ -10,7 +10,7 @@ userRouter.get('/', async (_req: Request, res: Response) => {
         include: [
             {
                 model: Chat,
-                association: 'InitiatedChats',
+                as: 'InitiatedChats',
             },
             {
                 model: Chat,
@@ -22,8 +22,8 @@ userRouter.get('/', async (_req: Request, res: Response) => {
     // Combine InitiatedChats and ReceivedChats to Chats
     const usersData = users.map((user) => {
         const userWithChats = user as UserInstance & {
-            InitiatedChats?: ChatInstance[];
-            ReceivedChats?: ChatInstance[];
+            InitiatedChats: ChatInstance[];
+            ReceivedChats: ChatInstance[];
         };
 
         // Combine chats into a single array
