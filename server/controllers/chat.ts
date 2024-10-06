@@ -31,43 +31,46 @@ chatRouter.get('/:id', async (req: Request, res: Response) => {
 
 chatRouter.get('/user/:id', async (req: Request, res: Response) => {
     const userId = req.params.id;
-
-    const userChats = await Chat.findAll({
-        where: {
-            [Op.or]: [{ userId1: userId }, { userId2: userId }],
-        },
-        include: [
-            {
-                model: User,
-                as: 'User1',
-                attributes: ['id', 'username', 'email'],
+    try {
+        const userChats = await Chat.findAll({
+            where: {
+                [Op.or]: [{ userId1: userId }, { userId2: userId }],
             },
-            {
-                model: User,
-                as: 'User2',
-                attributes: ['id', 'username', 'email'],
-            },
-        ],
-    });
+            include: [
+                {
+                    model: User,
+                    as: 'User1',
+                    attributes: ['id', 'username', 'email'],
+                },
+                {
+                    model: User,
+                    as: 'User2',
+                    attributes: ['id', 'username', 'email'],
+                },
+            ],
+        });
 
-    const chats = userChats.map((chat) => {
-        const chatData = chat as ChatInstance & {
-            User1: UserInstance;
-            User2: UserInstance;
-        };
+        const chats = userChats.map((chat) => {
+            const chatData = chat as ChatInstance & {
+                User1: UserInstance;
+                User2: UserInstance;
+            };
 
-        const otherUser = chatData.userId1 === userId ? chatData.User2 : chatData.User1;
+            const otherUser = chatData.userId1 === userId ? chatData.User2 : chatData.User1;
 
-        return {
-            id: chatData.id,
-            createdAt: chatData.createdAt,
-            updatedAt: chatData.updatedAt,
-            user: otherUser,
-        };
-    });
+            return {
+                id: chatData.id,
+                createdAt: chatData.createdAt,
+                updatedAt: chatData.updatedAt,
+                user: otherUser,
+            };
+        });
 
-    if (userChats.length !== 0) res.json(chats);
-    else res.status(404).json({ error: 'User has no available chats' });
+        if (userChats.length !== 0) res.json(chats);
+        else res.status(404).json({ error: 'User has no available chats' });
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 export default chatRouter;

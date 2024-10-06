@@ -1,8 +1,8 @@
-// import React from 'react';
 import { Link } from 'react-router-dom';
 import './Chat.css';
 import InputMessage from '../../components/messages/inputMessage/InputMessage';
 import Messages from '../../components/messages/Messages';
+// import { useQuery } from '@tanstack/react-query';
 
 const Chat = () => {
     return (

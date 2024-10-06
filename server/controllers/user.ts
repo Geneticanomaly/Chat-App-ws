@@ -46,6 +46,11 @@ userRouter.post('/', async (req: Request, res: Response) => {
     res.json(user);
 });
 
+userRouter.get('/:id', async (_req: Request, res: Response) => {
+    const user = await User.findByPk();
+    res.json(user);
+});
+
 export default userRouter;
 
 // export const getUsers: RequestHandler = async (_req, res) => {

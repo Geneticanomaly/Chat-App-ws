@@ -6,7 +6,7 @@ const getAll = async () => {
     return res.data;
 };
 
-const getUserChats = async (userId: string) => {
+const getUserChats = async (userId: string | undefined) => {
     const res = await axios.get(`${baseUrl}/user/${userId}`);
     return res.data;
 };

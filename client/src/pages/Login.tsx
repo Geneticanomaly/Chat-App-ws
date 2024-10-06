@@ -1,17 +1,20 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import loginServices from '../services/login';
+import { useUserDispatch } from '../context/UserContext/useUserContext';
 
 const Login = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const userDispatch = useUserDispatch();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             const user = await loginServices.loginUser(email, password);
             window.localStorage.setItem('loggedInUser', JSON.stringify(user));
+            userDispatch({ type: 'SET', payload: user });
             setEmail('');
             setPassword('');
             navigate('/home');

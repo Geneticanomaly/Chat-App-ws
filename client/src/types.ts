@@ -6,10 +6,19 @@ export type Chat = {
 };
 
 export type User = {
-    id: number;
+    id: string;
     email: string;
     username: string;
     createdAt: string;
     updatedAt: string;
     chats?: Chat[];
 };
+
+export type UserContextValueType = {
+    token: string;
+    user: User;
+};
+
+// export type UserContextType = {
+//     user: User
+// }
