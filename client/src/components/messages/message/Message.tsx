@@ -1,9 +1,14 @@
 import { Link } from 'react-router-dom';
 import './Message.css';
+import { MessageType } from '../../../types';
 
-function Message() {
+type MessageProps = {
+    message: MessageType;
+};
+
+function Message({ message }: MessageProps) {
     return (
-        <div>
+        <>
             <div className="message-info">
                 <Link className="link" to={`/home`}>
                     <img
@@ -13,8 +18,10 @@ function Message() {
                 </Link>
                 <p>7:21 PM</p>
             </div>
-            <div className="message-content"></div>
-        </div>
+            <div className="message-content">
+                <p className="sent-message">{message.message}</p>
+            </div>
+        </>
     );
 }
 

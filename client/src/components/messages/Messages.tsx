@@ -1,10 +1,21 @@
 import './Messages.css';
 import Message from './message/Message';
+import { MessageType } from '../../types';
 
-function Messages() {
+type MessagesProps = {
+    userMessages: MessageType[];
+    otherUserMessages: MessageType[];
+};
+
+function Messages({ userMessages, otherUserMessages }: MessagesProps) {
+    const allMessages = [...userMessages, ...otherUserMessages].sort(
+        (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    );
     return (
         <div className="messages">
-            <Message />
+            {allMessages.map((message) => (
+                <Message key={message.id} message={message} />
+            ))}
         </div>
     );
 }

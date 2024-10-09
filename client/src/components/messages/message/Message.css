@@ -36,6 +36,7 @@
     flex-direction: column;
     gap: 10px;
     text-align: left;
+    color: black;
 }
 
 .sent-message {

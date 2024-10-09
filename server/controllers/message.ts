@@ -14,4 +14,13 @@ messageRouter.post('/', async (req: Request, res: Response) => {
     res.json(message);
 });
 
+messageRouter.get('/:id', async (req: Request, res: Response) => {
+    const messages = await Message.findAll({
+        where: {
+            senderId: req.params.id,
+        },
+    });
+    res.json(messages);
+});
+
 export default messageRouter;

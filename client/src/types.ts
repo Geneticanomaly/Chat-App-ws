@@ -22,3 +22,19 @@ export type UserContextValueType = {
 // export type UserContextType = {
 //     user: User
 // }
+
+export type MessageType = {
+    id: number;
+    chatId: number;
+    senderId: string;
+    message: string;
+    isRead: boolean;
+    createdAt: string;
+    updatedAt: string;
+};
+
+export type SentMessage = {
+    chatId: number;
+    senderId: string;
+    message: string;
+};

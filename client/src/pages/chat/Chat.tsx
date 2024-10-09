@@ -1,10 +1,36 @@
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import './Chat.css';
 import InputMessage from '../../components/messages/inputMessage/InputMessage';
 import Messages from '../../components/messages/Messages';
-// import { useQuery } from '@tanstack/react-query';
+import { useUserValue } from '../../context/UserContext/useUserContext';
+import { useQuery } from '@tanstack/react-query';
+import messageServices from '../../services/message';
 
 const Chat = () => {
+    const user = useUserValue();
+    const { id } = useParams<{ id: string }>();
+
+    const {
+        isLoading,
+        error,
+        data: userMessages,
+    } = useQuery({
+        queryKey: ['userMessages'],
+        queryFn: () => messageServices.getAll(user?.user.id),
+    });
+
+    const {
+        isLoading: otherLoading,
+        error: otherError,
+        data: otherUserMessages,
+    } = useQuery({
+        queryKey: ['otherUserMessages'],
+        queryFn: () => messageServices.getAll(id),
+    });
+
+    if (isLoading || otherLoading) return <>Loading...</>;
+    if (error || otherError) return <>An error occured</>;
+
     return (
         <>
             <div className="chat-background"></div>
@@ -26,7 +52,7 @@ const Chat = () => {
                         </Link>
                     </div>
                 </header>
-                <Messages />
+                <Messages userMessages={userMessages} otherUserMessages={otherUserMessages} />
                 <InputMessage />
             </div>
         </>
