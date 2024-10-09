@@ -17,6 +17,7 @@ const Chat = () => {
     } = useQuery({
         queryKey: ['userMessages'],
         queryFn: () => messageServices.getAll(user?.user.id),
+        staleTime: 5 * 60 * 1000,
     });
 
     const {
@@ -26,6 +27,7 @@ const Chat = () => {
     } = useQuery({
         queryKey: ['otherUserMessages'],
         queryFn: () => messageServices.getAll(id),
+        staleTime: 5 * 60 * 1000,
     });
 
     if (isLoading || otherLoading) return <>Loading...</>;

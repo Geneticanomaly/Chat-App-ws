@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './InputMessage.css';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useUserValue } from '../../../context/UserContext/useUserContext';
-import { SentMessage } from '../../../types';
+import { MessageType, SentMessage } from '../../../types';
 import messageServices from '../../../services/message';
 
 function InputMessage() {
@@ -12,9 +12,11 @@ function InputMessage() {
 
     const mutation = useMutation({
         mutationFn: (newMessage: SentMessage) => messageServices.create(newMessage),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['userMessages'] });
+        onSuccess: (message) => {
+            const messages = queryClient.getQueryData<MessageType[]>(['userMessages']) || [];
+            queryClient.setQueryData(['userMessages'], [...messages, message]);
             setUserInput('');
+            // queryClient.invalidateQueries({ queryKey: ['userMessages'] });
         },
         onError: (e) => {
             console.log(e);
