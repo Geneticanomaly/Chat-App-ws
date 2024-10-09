@@ -24,7 +24,7 @@ export type UserContextValueType = {
 // }
 
 export type MessageType = {
-    id: number;
+    id?: number;
     chatId: number;
     senderId: string;
     message: string;
@@ -32,6 +32,10 @@ export type MessageType = {
     createdAt: string;
     updatedAt: string;
 };
+
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+
+export type MessageWithoutId = UnionOmit<MessageType, 'id'>;
 
 export type SentMessage = {
     chatId: number;

@@ -3,12 +3,38 @@ import './Chat.css';
 import InputMessage from '../../components/messages/inputMessage/InputMessage';
 import Messages from '../../components/messages/Messages';
 import { useUserValue } from '../../context/UserContext/useUserContext';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import messageServices from '../../services/message';
+import { useEffect, useState } from 'react';
+import { socket } from '../../socket';
+import { MessageType, MessageWithoutId } from '../../types';
 
 const Chat = () => {
     const user = useUserValue();
     const { id } = useParams<{ id: string }>();
+    const queryClient = useQueryClient();
+    const [receivedMessages, setReceivedMessages] = useState<MessageType[]>([]);
+
+    useEffect(() => {
+        if (user) {
+            socket.emit('connectToChat', user.user.id);
+
+            // Listen for incoming messages
+            socket.on('message', (data: MessageWithoutId) => {
+                setReceivedMessages((prevMessages) => [...prevMessages, data]);
+                // Optionally, you can also invalidate the queries to fetch new messages
+                // queryClient.invalidateQueries({ queryKey: ['userMessages'] });
+                // queryClient.invalidateQueries({ queryKey: ['otherUserMessages'] });
+            });
+        }
+
+        return () => {
+            if (user) {
+                socket.emit('disconnectFromChat', user.user.id);
+                socket.off('message');
+            }
+        };
+    }, [user, queryClient]);
 
     const {
         isLoading,
@@ -17,7 +43,7 @@ const Chat = () => {
     } = useQuery({
         queryKey: ['userMessages'],
         queryFn: () => messageServices.getAll(user?.user.id),
-        staleTime: 5 * 60 * 1000,
+        // staleTime: 5 * 60 * 1000,
     });
 
     const {
@@ -27,11 +53,14 @@ const Chat = () => {
     } = useQuery({
         queryKey: ['otherUserMessages'],
         queryFn: () => messageServices.getAll(id),
-        staleTime: 5 * 60 * 1000,
+        // staleTime: 5 * 60 * 1000,
     });
 
     if (isLoading || otherLoading) return <>Loading...</>;
-    if (error || otherError) return <>An error occured</>;
+    if (error || otherError) return <>An error occurred</>;
+
+    // Combine userMessages and receivedMessages for display
+    const combinedMessages = [...userMessages, ...otherUserMessages, ...receivedMessages];
 
     return (
         <>
@@ -54,8 +83,8 @@ const Chat = () => {
                         </Link>
                     </div>
                 </header>
-                <Messages userMessages={userMessages} otherUserMessages={otherUserMessages} />
-                <InputMessage />
+                <Messages combinedMessages={combinedMessages} />
+                <InputMessage recipientId={id} />
             </div>
         </>
     );

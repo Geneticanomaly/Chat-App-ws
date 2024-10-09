@@ -16,7 +16,7 @@ function Message({ message }: MessageProps) {
                         className="message-profile-img"
                     />
                 </Link>
-                <p>7:21 PM</p>
+                <p>{message.createdAt}</p>
             </div>
             <div className="message-content">
                 <p className="sent-message">{message.message}</p>

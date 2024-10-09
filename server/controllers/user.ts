@@ -46,8 +46,8 @@ userRouter.post('/', async (req: Request, res: Response) => {
     res.json(user);
 });
 
-userRouter.get('/:id', async (_req: Request, res: Response) => {
-    const user = await User.findByPk();
+userRouter.get('/:id', async (req: Request, res: Response) => {
+    const user = await User.findByPk(req.params.id);
     res.json(user);
 });
 

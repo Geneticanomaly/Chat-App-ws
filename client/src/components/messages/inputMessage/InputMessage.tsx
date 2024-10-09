@@ -4,8 +4,13 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useUserValue } from '../../../context/UserContext/useUserContext';
 import { MessageType, SentMessage } from '../../../types';
 import messageServices from '../../../services/message';
+import { socket } from '../../../socket';
 
-function InputMessage() {
+type InputMessageProps = {
+    recipientId: string | undefined;
+};
+
+function InputMessage({ recipientId }: InputMessageProps) {
     const [userInput, setUserInput] = useState('');
     const queryClient = useQueryClient();
     const user = useUserValue();
@@ -33,6 +38,11 @@ function InputMessage() {
             message: userInput,
         };
         mutation.mutate(newMessage);
+
+        socket.emit('message', {
+            recipientId: recipientId,
+            message: newMessage,
+        });
     };
 
     return (
