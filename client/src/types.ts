@@ -19,10 +19,6 @@ export type UserContextValueType = {
     user: User;
 };
 
-// export type UserContextType = {
-//     user: User
-// }
-
 export type MessageType = {
     id?: number;
     chatId: number;
